@@ -2,13 +2,12 @@
 
 namespace App\Controllers;
 
-use Core\View;
 use Core\Controller;
 
-class HomeController extends Controller
+class TestController extends Controller
 {
     public function indexAction()
     {
-        View::renderTemplate('home');
+        echo 'This is a message from the TestController';
     }
 }

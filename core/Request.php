@@ -4,10 +4,10 @@ namespace Core;
 
 class Request
 {
-	public $url;
+    public $url;
 
-	public function __construct()
-	{
-		$this->url = $_SERVER["REQUEST_URI"];
-	}
+    public function __construct()
+    {
+        $this->url = $_SERVER["REQUEST_URI"];
+    }
 }

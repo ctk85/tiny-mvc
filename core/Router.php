@@ -6,51 +6,51 @@ use Exception;
 
 class Router
 {
-	private $routes = [];
-	private $params = [];
+    private $routes = [];
+    private $params = [];
 
-	public function addCallableRoute($route, callable $closure)
-	{
-		$this->routes[$route] = $closure; 
-	}
+    public function addCallableRoute($route, callable $closure)
+    {
+        $this->routes[$route] = $closure;
+    }
 
-	public function addRoute($route, array $params = [])
-	{
-		$this->routes[$route] = $params;
-	}
+    public function addRoute($route, array $params = [])
+    {
+        $this->routes[$route] = $params;
+    }
 
-	public function execute(Request $request)
-	{
-		$url = $request->url;
+    public function execute(Request $request)
+    {
+        $url = $request->url;
 
-		if (!$this->match($url)) {
-			return header("HTTP/1.0 404 Not Found");
-		}
+        if (!$this->match($url)) {
+            return header("HTTP/1.0 404 Not Found");
+        }
 
-		$controller = $this->getControllerPath();
+        $controller = $this->getControllerPath();
 
-		if (!class_exists($controller)) {
-			throw new Exception("Controller class $controller not found");
-		}
+        if (!class_exists($controller)) {
+            throw new Exception("Controller class $controller not found");
+        }
 
         $controllerObj = new $controller($this->params);
         $action = $this->convertToCamelCase($this->params['action']);
-	    
-	    if (preg_match('/action$/i', $action) != 0) {
-	    	throw new Exception("Remove the Action suffix to call this method");
-	    }
 
-	    return $controllerObj->$action();
-	}
+        if (preg_match('/action$/i', $action) != 0) {
+            throw new Exception("Remove the Action suffix to call this method");
+        }
 
-	public function getRoutes()
+        return $controllerObj->$action();
+    }
+
+    public function getRoutes()
     {
         return $this->routes;
     }
 
     public function getParams()
     {
-    	return $this->params;
+        return $this->params;
     }
 
     private function convertToCamelCase($string)
@@ -63,7 +63,7 @@ class Router
         return str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
     }
 
-	private function getNamespace()
+    private function getNamespace()
     {
         $namespace = 'App\Controllers\\';
         if (array_key_exists('namespace', $this->params)) {
@@ -80,17 +80,17 @@ class Router
 
     private function match($url)
     {
-    	if (array_key_exists($url, $this->routes)) {
-	    	foreach ($this->routes as $route => $params) {
-		        if ($url == $route) {
-		        	foreach($params as $key => $value) {
-		        		$matches[$key] = $value;
-		        	}
-		        }
-			}
-			$this->params = $matches;
-			return true;
-		}
-		return false;
+        if (array_key_exists($url, $this->routes)) {
+            foreach ($this->routes as $route => $params) {
+                if ($url == $route) {
+                    foreach($params as $key => $value) {
+                        $matches[$key] = $value;
+                    }
+                }
+            }
+            $this->params = $matches;
+            return true;
+        }
+        return false;
     }
 }
