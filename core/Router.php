@@ -80,17 +80,17 @@ class Router
 
     private function match($url)
     {
-        if (array_key_exists($url, $this->routes)) {
-            foreach ($this->routes as $route => $params) {
-                if ($url == $route) {
-                    foreach($params as $key => $value) {
-                        $matches[$key] = $value;
-                    }
+        if (!array_key_exists($url, $this->routes)) {
+            return false;
+        }
+        foreach ($this->routes as $route => $params) {
+            if ($url == $route) {
+                foreach($params as $key => $value) {
+                    $matches[$key] = $value;
                 }
             }
-            $this->params = $matches;
-            return true;
         }
-        return false;
+        $this->params = $matches;
+        return true;
     }
 }
