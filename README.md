@@ -1,5 +1,5 @@
 # tiny-mvc
-Very simple PHP MVC using Twig templating.
+Simple PHP MVC using Twig templating.
 PHP version 7.2
 
 ### To do
@@ -10,7 +10,7 @@ PHP version 7.2
 * Clone this repo
 * Install project dependancies:
 ```
-composer update
+composer install
 ```
 * Configure your web server to have the public folder as root.
 * Create your environment file and enter your database configuration:
